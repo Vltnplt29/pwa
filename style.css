@@ -1,0 +1,62 @@
+/* Reset basique */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #f0f4f9, #dfe9f3);
+  color: #333;
+  padding: 2rem;
+  text-align: center;
+  min-height: 100vh;
+}
+
+/* Titres */
+h1 {
+  font-size: 2.2rem;
+  color: #1a73e8;
+  margin-bottom: 0.5rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  color: #444;
+  margin: 1.5rem 0 1rem;
+}
+
+/* Séparateurs */
+hr {
+  border: none;
+  border-top: 2px solid #e0e0e0;
+  margin: 1.5rem auto;
+  width: 80%;
+}
+
+/* Texte du voyage */
+p {
+  font-size: 1.2rem;
+  margin-top: 0.5rem;
+}
+
+.voyage {
+  font-weight: bold;
+  color: #e91e63;
+}
+
+/* Effet carte si tu ajoutes d’autres infos plus tard */
+.card {
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  padding: 1rem 1.5rem;
+  margin: 1rem auto;
+  max-width: 400px;
+  transition: transform 0.2s ease;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+}
