@@ -1,4 +1,4 @@
-import install from 'install.js'
+import install from './install.js'
 
 async function fetchVoyage() {
   try {
