@@ -7,7 +7,7 @@
 
 body {
   font-family: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #667eea, #764ba2);
+  background: linear-gradient(135deg, #2e7d32, #1b5e20); /* vert dégradé */
   color: #fff;
   padding: 2rem;
   text-align: center;
@@ -22,15 +22,15 @@ body {
 h1 {
   font-size: 2.5rem;
   font-weight: 700;
-  color: #fff;
+  color: #ffffff;
   margin-bottom: 0.5rem;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
 }
 
 h2 {
   font-size: 1.4rem;
   font-weight: 500;
-  color: #e0e0e0;
+  color: #cfd8dc; /* gris clair */
   margin: 1.5rem 0 1rem;
 }
 
@@ -47,19 +47,20 @@ p {
   font-size: 1.1rem;
   margin-top: 0.5rem;
   line-height: 1.6;
+  color: #f5f5f5;
 }
 
 .voyage {
   font-weight: 700;
-  color: #ffeb3b;
+  color: #aed581; /* vert clair mis en avant */
   font-size: 1.3rem;
 }
 
 /* Carte style “app mobile” */
 .card {
-  background: rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.12);
   border-radius: 16px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
   backdrop-filter: blur(10px);
   padding: 1.5rem 2rem;
   margin: 1.2rem auto;
@@ -69,7 +70,7 @@ p {
 
 .card:hover {
   transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
 }
 
 /* Bouton installer style app */
@@ -78,7 +79,7 @@ p {
   bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #ff4081;
+  background: #43a047; /* vert principal */
   color: #fff;
   border: none;
   border-radius: 50px;
@@ -91,7 +92,7 @@ p {
 }
 
 .install-btn:hover {
-  background: #e91e63;
+  background: #388e3c;
   transform: translateX(-50%) scale(1.05);
 }
 
