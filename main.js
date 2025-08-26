@@ -1,5 +1,3 @@
-import install from './install.js'
-import registerServiceWorker from './register-sw.js';
 
 async function fetchVoyage() {
   try {
@@ -17,6 +15,3 @@ async function fetchVoyage() {
 }
 
 fetchVoyage();
-
-install()
-registerServiceWorker()

@@ -1,8 +1,8 @@
 {
     "name": "Démo PWA",
     "short_name": "demo",
-    "deescription": "Une application qui démontre les PWA",
-    "start_url": "index.html",
+    "description": "Une application qui démontre les PWA",
+    "start_url": "./",
     "version": "1.0",
     "author": "VLTNPLT",
     "display":"standalone",

@@ -13,4 +13,4 @@ function registerServiceWorker() {
   }
 }
 
-export default registerServiceWorker;
+registerServiceWorker()
