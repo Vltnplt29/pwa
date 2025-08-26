@@ -6,71 +6,99 @@
 }
 
 body {
-  font-family: "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #f0f4f9, #dfe9f3);
-  color: #333;
+  font-family: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  color: #fff;
   padding: 2rem;
   text-align: center;
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
 }
 
 /* Titres */
 h1 {
-  font-size: 2.2rem;
-  color: #1a73e8;
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #fff;
   margin-bottom: 0.5rem;
+  text-shadow: 0 2px 6px rgba(0,0,0,0.3);
 }
 
 h2 {
-  font-size: 1.5rem;
-  color: #444;
+  font-size: 1.4rem;
+  font-weight: 500;
+  color: #e0e0e0;
   margin: 1.5rem 0 1rem;
 }
 
 /* Séparateurs */
 hr {
   border: none;
-  border-top: 2px solid #e0e0e0;
+  border-top: 2px dashed rgba(255,255,255,0.4);
   margin: 1.5rem auto;
-  width: 80%;
+  width: 70%;
 }
 
 /* Texte du voyage */
 p {
-  font-size: 1.2rem;
+  font-size: 1.1rem;
   margin-top: 0.5rem;
+  line-height: 1.6;
 }
 
 .voyage {
-  font-weight: bold;
-  color: #e91e63;
+  font-weight: 700;
+  color: #ffeb3b;
+  font-size: 1.3rem;
 }
 
-/* Effet carte si tu ajoutes d’autres infos plus tard */
+/* Carte style “app mobile” */
 .card {
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-  padding: 1rem 1.5rem;
-  margin: 1rem auto;
-  max-width: 400px;
-  transition: transform 0.2s ease;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 16px;
+  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  backdrop-filter: blur(10px);
+  padding: 1.5rem 2rem;
+  margin: 1.2rem auto;
+  max-width: 420px;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 
 .card:hover {
-  transform: translateY(-3px);
+  transform: translateY(-5px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.25);
 }
 
-.hidden{
-  display: none;
-}
-
+/* Bouton installer style app */
 .install-btn {
-  position: absolute;
-  width: 100%;
-  height: 5rem;
-  line-height: 5rem;
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: #ff4081;
+  color: #fff;
+  border: none;
+  border-radius: 50px;
+  padding: 1rem 2rem;
+  font-size: 1.1rem;
+  font-weight: 600;
   cursor: pointer;
-  color: red;
-  
+  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
+  transition: background 0.3s ease, transform 0.2s ease;
+}
+
+.install-btn:hover {
+  background: #e91e63;
+  transform: translateX(-50%) scale(1.05);
+}
+
+.install-btn:active {
+  transform: translateX(-50%) scale(0.95);
+}
+
+.hidden {
+  display: none;
 }
