@@ -108,9 +108,8 @@ self.addEventListener('push', e => {
   const icon = "/icons/favionc-256x256.png"
 
   const notification = registration.showNotification ( title, {
-  
+    
     body : message,
     icon
-  }
-  )
+  })
 })
