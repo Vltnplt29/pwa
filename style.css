@@ -1,4 +1,5 @@
-/* Reset basique */
+
+/* RESET & BASE */
 * {
   margin: 0;
   padding: 0;
@@ -6,100 +7,161 @@
 }
 
 body {
-  font-family: "Poppins", "Segoe UI", Roboto, Arial, sans-serif;
-  background: linear-gradient(135deg, #2e7d32, #1b5e20); /* vert dégradé */
-  color: #fff;
-  padding: 2rem;
-  text-align: center;
+  font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
   min-height: 100vh;
+  background: linear-gradient(120deg, #0f2027, #2c5364 60%, #f7971e 100%);
+  color: #fff;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: flex-start;
+  padding: 2.5rem 1rem 6rem 1rem;
+  overflow-x: hidden;
+  position: relative;
 }
 
-/* Titres */
+/* ANIMATED BACKGROUND SHAPES */
+body::before, body::after {
+  content: '';
+  position: absolute;
+  z-index: 0;
+  border-radius: 50%;
+  filter: blur(60px);
+  opacity: 0.5;
+}
+body::before {
+  width: 400px; height: 400px;
+  left: -120px; top: -120px;
+  background: radial-gradient(circle, #ff512f 0%, #dd2476 100%);
+  animation: float1 8s ease-in-out infinite alternate;
+}
+body::after {
+  width: 300px; height: 300px;
+  right: -100px; bottom: -100px;
+  background: radial-gradient(circle, #24c6dc 0%, #5433ff 100%);
+  animation: float2 10s ease-in-out infinite alternate;
+}
+@keyframes float1 {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(40px) scale(1.1); }
+}
+@keyframes float2 {
+  0% { transform: translateY(0) scale(1); }
+  100% { transform: translateY(-30px) scale(1.08); }
+}
+
+/* TITRES */
 h1 {
-  font-size: 2.5rem;
-  font-weight: 700;
-  color: #ffffff;
+  font-size: 2.7rem;
+  font-weight: 800;
+  letter-spacing: 2px;
+  color: #fff;
   margin-bottom: 0.5rem;
-  text-shadow: 0 2px 6px rgba(0,0,0,0.25);
+  text-shadow: 0 4px 24px #ff512f99, 0 2px 6px #0008;
+  z-index: 1;
 }
-
 h2 {
-  font-size: 1.4rem;
-  font-weight: 500;
-  color: #cfd8dc; /* gris clair */
-  margin: 1.5rem 0 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #ffe082;
+  margin: 2rem 0 1rem;
+  letter-spacing: 1px;
+  z-index: 1;
 }
 
-/* Séparateurs */
 hr {
   border: none;
-  border-top: 2px dashed rgba(255,255,255,0.4);
+  border-top: 2px solid #fff3;
   margin: 1.5rem auto;
   width: 70%;
+  z-index: 1;
 }
 
-/* Texte du voyage */
-p {
-  font-size: 1.1rem;
-  margin-top: 0.5rem;
-  line-height: 1.6;
-  color: #f5f5f5;
+/* CONTENU */
+p, .description {
+  font-size: 1.15rem;
+  margin-top: 0.7rem;
+  line-height: 1.7;
+  z-index: 1;
 }
-
 .voyage {
+  font-weight: 900;
+  color: #ffeb3b;
+  font-size: 1.4rem;
+  letter-spacing: 1px;
+  text-shadow: 0 2px 8px #ff512f88;
+}
+.prix {
+  color: #24c6dc;
   font-weight: 700;
-  color: #aed581; /* vert clair mis en avant */
-  font-size: 1.3rem;
+  font-size: 1.2rem;
+  text-shadow: 0 1px 4px #5433ff55;
 }
 
-/* Carte style “app mobile” */
-.card {
-  background: rgba(255, 255, 255, 0.12);
-  border-radius: 16px;
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.25);
-  backdrop-filter: blur(10px);
+/* GLASSMORPHISM CARD */
+.card, .description {
+  background: rgba(255,255,255,0.13);
+  border-radius: 18px;
+  box-shadow: 0 8px 32px 0 #1f26875e;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255,255,255,0.18);
   padding: 1.5rem 2rem;
   margin: 1.2rem auto;
-  max-width: 420px;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  max-width: 440px;
+  transition: transform 0.25s, box-shadow 0.25s;
+  z-index: 2;
+}
+.card:hover, .description:hover {
+  transform: scale(1.03) translateY(-4px);
+  box-shadow: 0 12px 32px #ff512f44;
 }
 
-.card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-}
-
-/* Bouton installer style app */
-.install-btn {
+/* BOUTONS */
+.install-btn, .notif-me {
   position: fixed;
-  bottom: 20px;
   left: 50%;
   transform: translateX(-50%);
-  background: #43a047; /* vert principal */
+  background: linear-gradient(90deg, #ff512f 0%, #dd2476 100%);
   color: #fff;
   border: none;
   border-radius: 50px;
-  padding: 1rem 2rem;
-  font-size: 1.1rem;
-  font-weight: 600;
+  padding: 1.1rem 2.2rem;
+  font-size: 1.15rem;
+  font-weight: 700;
   cursor: pointer;
-  box-shadow: 0 6px 15px rgba(0,0,0,0.3);
-  transition: background 0.3s ease, transform 0.2s ease;
+  box-shadow: 0 8px 24px #ff512f55;
+  transition: background 0.3s, transform 0.2s;
+  z-index: 10;
 }
-
-.install-btn:hover {
-  background: #388e3c;
-  transform: translateX(-50%) scale(1.05);
+.install-btn {
+  bottom: 30px;
 }
-
-.install-btn:active {
-  transform: translateX(-50%) scale(0.95);
+.notif-me {
+  bottom: 90px;
+  background: linear-gradient(90deg, #24c6dc 0%, #5433ff 100%);
+  box-shadow: 0 8px 24px #24c6dc55;
+}
+.install-btn:hover, .notif-me:hover {
+  background: linear-gradient(90deg, #ffe082 0%, #ff512f 100%);
+  color: #222;
+  transform: translateX(-50%) scale(1.07);
+}
+.install-btn:active, .notif-me:active {
+  transform: translateX(-50%) scale(0.97);
 }
 
 .hidden {
-  display: none;
+  display: none !important;
 }
+
+/* SCROLLBAR CUSTOM */
+::-webkit-scrollbar {
+  width: 10px;
+  background: #2c5364;
+}
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(120deg, #ff512f, #24c6dc);
+  border-radius: 8px;
+}
+
