@@ -5,6 +5,7 @@
   padding: 0;
   box-sizing: border-box;
 }
+/* Fin du fichier : accolade superflue supprimée */
 
 body {
   font-family: 'Poppins', 'Segoe UI', Arial, sans-serif;
@@ -164,4 +165,3 @@ p, .description {
   background: linear-gradient(120deg, #ff512f, #24c6dc);
   border-radius: 8px;
 }
-

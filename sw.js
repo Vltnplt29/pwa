@@ -1,99 +1,137 @@
-//https://www.educative.io/answers/5-service-worker-caching-strategies-for-your-next-pwa-app
-//https://pwa-workshop.js.org/fr/5-pwa-install/#ajout-d-un-invite-d-installation
-//https://developer.mozilla.org/fr/docs/Web/Progressive_web_apps/Tutorials/js13kGames/Offline_Service_workers
+const version = 1.0
 
-//https://github.com/mdn/translated-content/blob/main/files/fr/web/progressive_web_apps/tutorials/js13kgames/re-engageable_notifications_push/index.md
+const ulrsToCache = [
+    "/",
+    "/index.html",
+    "/style.css",
+    "/main.js",
+    "/install.js",
+    "/manifest.json",
+    "/favicon.ico",
+    "/register-sw.js",
+    "/sw.js",
+    "/icons/favicon-16x16.png",
+    "/icons/favicon-32x32.png",
+    "/icons/favicon-96x96.png",
+    "/icons/favicon-256x256.png",
+    "https://ingrwf12.cepegra-frontend.xyz/cockpit1/api/content/items/voyages"
+]
 
-//https://github.com/mdn/pwa-examples
+const cacheVersion = 4
 
-const cacheName = 'demo-v1';
-const appShellFiles = [
-  '/',
-  'sw.js',
-  '/index.html',
-  '/manifest.json',
-  '/main.js',
-  '/favicon.ico',
-  '/icons/favicon-32x32.png',
-  '/icons/favicon-16x16.png',
-  '/icons/favicon-96x96.png',
-  '/icons/favicon-256x256.png',
-  'https://api.punkapi.com/v2/beers/random'
-];
-//mise en cache
-const addResourcesToCache = async (resources) => {
-  const cache = await caches.open(cacheName);
-  await cache.addAll(resources);
-};
+const CACHE_NAME = `pwa-cache-${cacheVersion}`
 
-self.addEventListener("install", (event) => {
-  event.waitUntil(
-    addResourcesToCache(appShellFiles)
-  );
-});
+// install
 
-//Priorité au cache
-const cacheFirst = async (request) => {
-  const responseFromCache = await caches.match(request)
-    return responseFromCache
-}
-
-//Priorité au réseau
-const networkFirst = async (request) => {
-  const response = await fetch(request)
-  .catch(function() {
-    return caches.match(request)
+self.addEventListener('install', e => {
+    console.log('sw installed')
+    e.waitUntil(
+        caches.open(CACHE_NAME)
+        .then(cache => cache.addAll(ulrsToCache))
+    )
+    return self.skipWaiting()
 })
-    return response
-}
-// si on cherche un ressource, on gère les priorités
-self.addEventListener("fetch", (event) => {
-  if(!event.request.url.includes("https://api.punkapi.com/v2/")) {
-    event.respondWith(cacheFirst(event.request))
-  }
-  else {
-    event.respondWith(networkFirst(event.request))
-  }
+
+self.addEventListener('activate', e => {
+    console.log('sw activated')
+    // Suppression d'anciens caches (corrigé)
+    let oldVersion = cacheVersion - 1;
+    e.waitUntil(
+      caches.has(`pwa-cache-${oldVersion}`)
+        .then(exists => {
+          if (exists) {
+            caches.delete(`pwa-cache-${oldVersion}`)
+              .then(r => {
+                console.log("Ancien cache supprimé " + r);
+              });
+          }
+        })
+    );
+    return self.clients.claim();
+})
+
+
+//proxy
+// Intercepte toutes les requêtes réseau (fetch)
+self.addEventListener("fetch", (e) => {
+  // Ne prend en charge que les requêtes GET.
+  // Pour POST/PUT/DELETE... on laisse le navigateur gérer (pas de respondWith).
+  if (e.request.method !== "GET") return;
+
+  // On remplace la réponse par notre logique de cache/réseau
+  e.respondWith(
+    // 1) Regarder d'abord dans le Cache Storage s'il existe déjà une réponse
+    caches.match(e.request).then((cached) => {
+      if (cached) return cached; // ✅ Ressource trouvée en cache → on la renvoie tout de suite (cache-first)
+
+      // 2) Sinon, on va sur le réseau
+      return fetch(e.request)
+        .then((resp) => {
+          // Les Response sont des streams consommables une seule fois.
+          // On clone pour pouvoir à la fois renvoyer la réponse au navigateur ET l’enregistrer dans le cache.
+          const clone = resp.clone();
+
+          // On ne met en cache que si:
+          // - la réponse est OK (status 200-299)
+          // - la ressource est de même origine (évite de stocker des réponses opaques/CORS)
+          if (
+            resp.ok &&
+            new URL(e.request.url).origin === self.location.origin
+          ) {
+            // Mise en cache en "runtime" (asynchrone, on n'attend pas)
+            caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone));
+          }
+
+          // On renvoie la réponse réseau au navigateur
+          return resp;
+        })
+        .catch(() => {
+          // 3) Ici on arrive si le réseau échoue (offline, DNS, etc.)
+
+          // Si la requête est une navigation (ex: refresh / saisie d'URL),
+          // on renvoie l'index de la SPA pour avoir un fallback hors-ligne.
+          if (e.request.mode === "navigate") {
+            return caches.match("/index.html");
+          }
+
+          // Pour les autres requêtes (images, CSS, etc.) sans fallback spécifique,
+          // on renvoie une réponse "Offline" 503.
+          return new Response("Offline", {
+            status: 503,
+            statusText: "Offline",
+          });
+        });
+    })
+  );
 });
 
-//mise à jour du cache
-function update(request) {
-  console.log('update')
-  return fetch(request.url).then(
-    response =>
-      caches(request, response) // on peut mettre en cache la réponse
-        .then(() => response) // résout la promesse avec l'objet Response
-  );
-}
 
 
-// add push notification
-self.addEventListener("push", (event) => {
-  if (!(self.Notification && self.Notification.permission === "granted")) {
-    return;
+// push notifications
+
+self.addEventListener('push', e => {
+  if ( !(self.Notification && self.Notification.permission === 'granted'))
+  {
+    return
   }
-  console.log('test')
-  const data = event.data?.json() ?? {};
-  const title = data.title || "Something Has Happened";
-  const url = data.url || "http://formation-cepegra.be"
-  const message =
-    data.message || "Here's something you might want to check out.";
-  const icon = "icons/favicon-16x16.png";
+  console.log('push')
 
-  
-  const notification = registration.showNotification(title, {
-    body: message,
-    tag: "simple-push-demo-notification",
-    icon,
-  });
+  let data = {};
+  try {
+    data = e.data ? e.data.json() : {};
+  } catch {
+    data = {};
+  }
+  const title = data.title || "Hello WF-12";
+  const url = data.url || "https://cepegra.be";
+  const message = data.message || "Message de la formation WF-12";
+  const icon = "/icons/favicon-256x256.png";
 
- 
-  self.addEventListener('notificationclick', function(event) {
-    event.notification.close(); // Ferme la notification
-  
-    event.waitUntil(
-      clients.openWindow(url) // Redirige vers l'URL spécifiée
-    );
-  });
-  
+  e.waitUntil(
+    self.registration.showNotification(title, {
+      body: message,
+      icon,
+      data: { url }
+    })
+  );
 });
